@@ -9,7 +9,7 @@ import time
 # 1. Page Configuration (Elite UI)
 # =========================================
 st.set_page_config(
-    page_title="Smartphone Addiction Classification",
+    page_title="Smartphone Addiction Predictor",
     page_icon="📱",
     layout="wide"
 )
@@ -122,17 +122,40 @@ st.markdown('</div>', unsafe_allow_html=True)
 st.markdown('<h2 style="text-align:center; color:#38bdf8; margin-top:30px;">📊 Behavioral Analytics</h2>', unsafe_allow_html=True)
 v1, v2, v3 = st.columns(3)
 
+
+color_map = {
+    'Social': '#38bdf8',
+    'Gaming': '#818cf8',
+    'Edu': '#34d399'
+}
+
 with v1:
     st.markdown('<div class="premium-card"><span class="card-title">Time Distribution</span>', unsafe_allow_html=True)
-    fig_pie = px.pie(names=['Social', 'Gaming', 'Edu'], values=[s_t, g_t, e_t], hole=0.7,
-                     color_discrete_sequence=['#38bdf8', '#818cf8', '#34d399'])
-    fig_pie.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color="white", height=280, showlegend=False, margin=dict(t=10,b=10))
+    
+    fig_pie = px.pie(
+        names=list(color_map.keys()), 
+        values=[s_t, g_t, e_t], 
+        hole=0.7,
+        color=list(color_map.keys()), 
+        color_discrete_map=color_map   
+    )
+    
+    fig_pie.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)', 
+        font_color="white", 
+        height=280, 
+        showlegend=False, 
+        margin=dict(t=10,b=10)
+    )
+    
     st.plotly_chart(fig_pie, use_container_width=True)
-    st.markdown("""
+    
+    
+    st.markdown(f"""
     <div class="chart-desc">
-        <div class="legend-item"><span class="dot" style="background-color: #38bdf8;"></span> <b>Social Media:</b> High Dopamine reward.</div>
-        <div class="legend-item"><span class="dot" style="background-color: #818cf8;"></span> <b>Gaming:</b> Entertainment focus.</div>
-        <div class="legend-item"><span class="dot" style="background-color: #34d399;"></span> <b>Education:</b> Productive usage.</div>
+        <div class="legend-item"><span class="dot" style="background-color: {color_map['Social']};"></span> <b>Social Media:</b> High Dopamine reward.</div>
+        <div class="legend-item"><span class="dot" style="background-color: {color_map['Gaming']};"></span> <b>Gaming:</b> Entertainment focus.</div>
+        <div class="legend-item"><span class="dot" style="background-color: {color_map['Edu']};"></span> <b>Education:</b> Productive usage.</div>
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
