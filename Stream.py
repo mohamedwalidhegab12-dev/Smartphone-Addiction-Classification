@@ -89,7 +89,7 @@ model, expected_columns = load_assets()
 # =========================================
 # 3. Header
 # =========================================
-st.markdown('<h1 class="premium-h1">Smartphone Addiction Classification</h1>', unsafe_allow_html=True)
+st.markdown('<h1 class="premium-h1">Smartphone Addiction Predictor</h1>', unsafe_allow_html=True)
 st.markdown('<p style="text-align:center; color:#94a3b8; font-size:1.1rem; margin-bottom:40px;">Professional AI Diagnostic Dashboard | Mohamed Walid & Nahed Sheta .</p>', unsafe_allow_html=True)
 
 # =========================================
