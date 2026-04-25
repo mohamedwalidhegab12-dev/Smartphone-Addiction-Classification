@@ -18,6 +18,23 @@ st.markdown("""
     <style>
     .stApp { background: radial-gradient(circle, #1e293b, #0f172a, #020617); color: #f8fafc; }
     
+    /* تعديل الأسئلة: لون أبيض صريح، حجم أكبر، وخط أعرض */
+    div[data-testid="stWidgetLabel"] p {
+        color: #ffffff !important;
+        font-size: 1.7rem !important; 
+        font-weight: 900 !important;
+        letter-spacing: 0.5px !important;    
+        text-shadow: 2px 2px 4px rgba(0,0,0,1) !important;    
+       
+        margin-bottom: 15px !important;
+        line-height: 1.4 !important;    
+    }
+    div[data-testid="stThumbValue"], .stNumberInput input {
+        font-size: 1.3rem !important;
+        font-weight: bold !important;
+        color: #ffffff !important;
+    }        
+
     /* ستايل البطاقة الزجاجية */
     .premium-card {
         background: rgba(255, 255, 255, 0.02);
@@ -27,7 +44,6 @@ st.markdown("""
         backdrop-filter: blur(15px); margin-bottom: 25px;
     }
     
-    /* ستايل العنوان داخل البار الزجاجي */
     .card-title {
         color: #38bdf8;
         font-size: 1.4rem;
