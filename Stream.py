@@ -21,19 +21,19 @@ st.markdown("""
     /* تعديل الأسئلة: لون أبيض صريح، حجم أكبر، وخط أعرض */
     div[data-testid="stWidgetLabel"] p {
         color: #ffffff !important;
-        font-size: 1.7rem !important; 
+        font-size: 1.7rem !important;
         font-weight: 900 !important;
-        letter-spacing: 0.5px !important;    
-        text-shadow: 2px 2px 4px rgba(0,0,0,1) !important;    
-       
+        letter-spacing: 0.5px !important;
+        text-shadow: 2px 2px 4px rgba(0,0,0,1) !important;
         margin-bottom: 15px !important;
-        line-height: 1.4 !important;    
+        line-height: 1.4 !important;
     }
+
     div[data-testid="stThumbValue"], .stNumberInput input {
         font-size: 1.3rem !important;
         font-weight: bold !important;
         color: #ffffff !important;
-    }        
+    }      
 
     /* ستايل البطاقة الزجاجية */
     .premium-card {
