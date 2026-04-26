@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 import time
 
 # =========================================
-# 1. Page Configuration (Elite UI)
+# 1. Page Configuration & Forced Dark Mode
 # =========================================
 st.set_page_config(
     page_title="Smartphone Addiction Predictor",
@@ -16,9 +16,37 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    .stApp { background: radial-gradient(circle, #1e293b, #0f172a, #020617); color: #f8fafc; }
+    /* إجبار الثيم المظلم ومنع تغيره */
+    html, body, [data-testid="stAppViewContainer"], [data-testid="stHeader"], [data-testid="stSidebar"] {
+        background-color: #020617 !important;
+        color: #f8fafc !important;
+    }
+
+    .stApp { 
+        background: radial-gradient(circle, #1e293b, #0f172a, #020617); 
+        color: #f8fafc; 
+    }
     
-    /* تعديل الأسئلة: لون أبيض صريح، حجم أكبر، وخط أعرض */
+    /* ضبط أحجام الخطوط لتتناسب مع الفون (Responsive Design) */
+    @media (max-width: 640px) {
+        .premium-h1 {
+            font-size: 1.8rem !important; /* تصغير العنوان الرئيسي */
+        }
+        div[data-testid="stWidgetLabel"] p {
+            font-size: 1.1rem !important; /* تصغير حجم الأسئلة لتناسب عرض الشاشة */
+        }
+        .prediction-header {
+            font-size: 2.2rem !important; /* تصغير نتيجة التوقع */
+        }
+        .premium-card {
+            padding: 15px !important; 
+        }
+        h2 {
+            font-size: 1.5rem !important;
+        }
+    }
+
+    /* ستايل الأسئلة الأصلي */
     div[data-testid="stWidgetLabel"] p {
         color: #ffffff !important;
         font-size: 1.7rem !important;
@@ -66,7 +94,7 @@ st.markdown("""
     
     .stButton>button {
         width: 100%; background: linear-gradient(45deg, #0ea5e9, #6366f1);
-        color: white; border: none; padding: 20px; font-size: 1.5rem;
+        color: white !important; border: none; padding: 20px; font-size: 1.5rem;
         font-weight: bold; border-radius: 15px; transition: 0.4s;
     }
     .stButton>button:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5); }
@@ -93,9 +121,9 @@ st.markdown('<h1 class="premium-h1">Smartphone Addiction Predictor</h1>', unsafe
 st.markdown('<p style="text-align:center; color:#94a3b8; font-size:1.1rem; margin-bottom:40px;">Professional AI Diagnostic Dashboard | Mohamed Walid & Nahed Sheta .</p>', unsafe_allow_html=True)
 
 # =========================================
-# 4. Input Sections (Titles Inside Glass Cards)
+# 4. Input Sections
 # =========================================
-col_in1, col_in2, col_in3 = st.columns(3)
+col_in1, col_in2, col_in3 = st.columns([1, 1, 1])
 
 with col_in1:
     st.markdown('<div class="premium-card"><span class="card-title">👤 Personal Profile</span>', unsafe_allow_html=True)
@@ -124,7 +152,6 @@ with col_in3:
     exercise_h = st.slider("Exercise (Hours/Week)", 0, 25, 3)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Time Breakdown Card
 st.markdown('<div class="premium-card"><span class="card-title">🕒 Detailed Time Allocation (Live Preview)</span>', unsafe_allow_html=True)
 ts1, ts2, ts3 = st.columns(3)
 with ts1: s_t = st.number_input("Social Media (Hours)", 0.0, 20.0, 4.5)
@@ -133,47 +160,19 @@ with ts3: e_t = st.number_input("Education (Hours)", 0.0, 20.0, 1.5)
 st.markdown('</div>', unsafe_allow_html=True)
 
 # =========================================
-# 5. Visual Analytics (Titles Inside Glass Cards)
+# 5. Visual Analytics
 # =========================================
 st.markdown('<h2 style="text-align:center; color:#38bdf8; margin-top:30px;">📊 Behavioral Analytics</h2>', unsafe_allow_html=True)
 v1, v2, v3 = st.columns(3)
 
-
-color_map = {
-    'Social': '#38bdf8',
-    'Gaming': '#818cf8',
-    'Edu': '#34d399'
-}
+color_map = {'Social': '#38bdf8', 'Gaming': '#818cf8', 'Edu': '#34d399'}
 
 with v1:
     st.markdown('<div class="premium-card"><span class="card-title">Time Distribution</span>', unsafe_allow_html=True)
-    
-    fig_pie = px.pie(
-        names=list(color_map.keys()), 
-        values=[s_t, g_t, e_t], 
-        hole=0.7,
-        color=list(color_map.keys()), 
-        color_discrete_map=color_map   
-    )
-    
-    fig_pie.update_layout(
-        paper_bgcolor='rgba(0,0,0,0)', 
-        font_color="white", 
-        height=280, 
-        showlegend=False, 
-        margin=dict(t=10,b=10)
-    )
-    
+    fig_pie = px.pie(names=list(color_map.keys()), values=[s_t, g_t, e_t], hole=0.7, color=list(color_map.keys()), color_discrete_map=color_map)
+    fig_pie.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color="white", height=280, showlegend=False, margin=dict(t=10,b=10))
     st.plotly_chart(fig_pie, use_container_width=True)
-    
-    
-    st.markdown(f"""
-    <div class="chart-desc">
-        <div class="legend-item"><span class="dot" style="background-color: {color_map['Social']};"></span> <b>Social Media:</b> High Dopamine reward.</div>
-        <div class="legend-item"><span class="dot" style="background-color: {color_map['Gaming']};"></span> <b>Gaming:</b> Entertainment focus.</div>
-        <div class="legend-item"><span class="dot" style="background-color: {color_map['Edu']};"></span> <b>Education:</b> Productive usage.</div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f'<div class="chart-desc"><div class="legend-item"><span class="dot" style="background-color: {color_map["Social"]};"></span> <b>Social:</b> High Dopamine.</div><div class="legend-item"><span class="dot" style="background-color: {color_map["Gaming"]};"></span> <b>Gaming:</b> Entertainment.</div><div class="legend-item"><span class="dot" style="background-color: {color_map["Edu"]};"></span> <b>Education:</b> Productive.</div></div>', unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with v2:
@@ -181,19 +180,14 @@ with v2:
     cat = ['Anxiety', 'Depression', 'Academic', 'Exercise', 'Sleep']
     val = [anxiety*10, depression*10, academic, (exercise_h/20)*100, (sleep_h/12)*100]
     fig_radar = go.Figure(go.Scatterpolar(r=val, theta=cat, fill='toself', line=dict(color='#c084fc')))
-    fig_radar.update_layout(polar=dict(bgcolor="rgba(0,0,0,0)", radialaxis=dict(visible=False, range=[0, 100])),
-                            paper_bgcolor='rgba(0,0,0,0)', font_color="white", height=280, margin=dict(t=30,b=20))
+    fig_radar.update_layout(polar=dict(bgcolor="rgba(0,0,0,0)", radialaxis=dict(visible=False, range=[0, 100])), paper_bgcolor='rgba(0,0,0,0)', font_color="white", height=280, margin=dict(t=30,b=20))
     st.plotly_chart(fig_radar, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
 with v3:
     st.markdown('<div class="premium-card"><span class="card-title">Weekday vs Weekend</span>', unsafe_allow_html=True)
-    fig_bar = go.Figure(data=[
-        go.Bar(name='Weekday', x=['Usage'], y=[daily_h], marker_color='#38bdf8'),
-        go.Bar(name='Weekend', x=['Usage'], y=[weekend_h], marker_color='#c084fc')
-    ])
-    fig_bar.update_layout(barmode='group', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', 
-                        font_color="white", height=280, margin=dict(t=10,b=10))
+    fig_bar = go.Figure(data=[go.Bar(name='Weekday', x=['Usage'], y=[daily_h], marker_color='#38bdf8'), go.Bar(name='Weekend', x=['Usage'], y=[weekend_h], marker_color='#c084fc')])
+    fig_bar.update_layout(barmode='group', paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font_color="white", height=280, margin=dict(t=10,b=10))
     st.plotly_chart(fig_bar, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -225,15 +219,15 @@ if st.button("🚀 ANALYZE ADDICTION LEVEL"):
             res = model.predict(final_input)[0]
         
         if "Strong" in res or "High" in res:
-            advice = "Critical: Your phone is controlling your life. We recommend a Digital Detox and strict screen time limits."
+            advice = "Critical: Digital Detox recommended."
             color = "#ef4444" 
             score = 92
         elif "Moderate" in res:
-            advice = "Warning: You are entering the danger zone. Try to increase physical activities and family time."
+            advice = "Warning: Enter danger zone."
             color = "#f59e0b"
             score = 55
         else:
-            advice = "Safe: Your digital habits are well-balanced. Keep maintaining this healthy relationship with your device."
+            advice = "Safe: Balanced habits."
             color = "#10b981" 
             score = 15
 
@@ -241,18 +235,12 @@ if st.button("🚀 ANALYZE ADDICTION LEVEL"):
         res_c1, res_c2 = st.columns([1, 1.2])
         with res_c1:
             st.markdown(f'<div class="premium-card" style="border: 2px solid {color}; text-align:center;"><span class="card-title" style="border:none;">Diagnosis Result</span>', unsafe_allow_html=True)
-            st.markdown(f'<h1 style="color:{color}; font-size:4rem;">{res}</h1>', unsafe_allow_html=True)
+            st.markdown(f'<h1 class="prediction-header" style="color:{color}; font-size:4rem;">{res}</h1>', unsafe_allow_html=True)
             st.markdown(f'<p style="font-size:1.1rem; color:#e2e8f0; line-height:1.6;"><b>AI Insight:</b> {advice}</p>', unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
             
         with res_c2:
-            fig_g = go.Figure(go.Indicator(
-                mode = "gauge+number", value = score,
-                title = {'text': "Addiction Severity Index", 'font': {'size': 20, 'color': 'white'}},
-                gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': color},
-                         'steps': [{'range': [0, 40], 'color': "rgba(16,185,129,0.15)"},
-                                   {'range': [40, 75], 'color': "rgba(245,158,11,0.15)"},
-                                   {'range': [75, 100], 'color': "rgba(239,68,68,0.15)"}]}))
+            fig_g = go.Figure(go.Indicator(mode = "gauge+number", value = score, title = {'text': "Severity Index", 'font': {'color': 'white'}}, gauge = {'axis': {'range': [0, 100]}, 'bar': {'color': color}}))
             fig_g.update_layout(paper_bgcolor='rgba(0,0,0,0)', font_color="white", height=380)
             st.plotly_chart(fig_g, use_container_width=True)
     else: st.error("Model files not found!")
